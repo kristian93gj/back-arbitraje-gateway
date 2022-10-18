@@ -1,0 +1,36 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: arbitraje-gateway
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: ['http://localhost:4200', '*']
+            allowedHeaders: '*'
+            allowedMethods:
+            - GET
+            - POST
+      routes:
+      - id: arbitraje-core
+        uri: http://localhost:8080
+        predicates:
+          - Path=/api/core/**
+        filters:
+          - StripPrefix=2
+      - id: servicio-oauth
+        uri: lb://servicio-oauth
+        predicates:
+          - Path=/api/security/**
+        filters:
+          - StripPrefix=2
+      - id: arbitraje-user
+        uri: "http://localhost:8001"
+        predicates:
+          - Path=/api/usuarios/**
+        filters:
+          - StripPrefix=2
+
