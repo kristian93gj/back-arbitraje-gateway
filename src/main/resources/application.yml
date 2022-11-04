@@ -11,9 +11,7 @@ spring:
           '[/**]':
             allowedOrigins: ['http://localhost:4200', '*']
             allowedHeaders: '*'
-            allowedMethods:
-            - GET
-            - POST
+            allowedMethods: '*'
       routes:
       - id: arbitraje-core
         uri: http://localhost:8080
@@ -22,7 +20,7 @@ spring:
         filters:
           - StripPrefix=2
       - id: servicio-oauth
-        uri: lb://servicio-oauth
+        uri: "http://localhost:9000"
         predicates:
           - Path=/api/security/**
         filters:
@@ -33,4 +31,8 @@ spring:
           - Path=/api/usuarios/**
         filters:
           - StripPrefix=2
+      - id: servicio-prueba
+        uri: lb://servicio-prueba
+        predicates:
+          - Path=/api/prueba/**
 
